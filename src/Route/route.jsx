@@ -9,11 +9,15 @@ import AddBook from "../Pages/AddBook/AddBook";
 import BorrowedBooks from "../Pages/BorrowedBooks/BorrowedBooks";
 import About from "../Pages/About/About";
 import Contact from "../Pages/Contact/Contact";
+import PageNotFound from "../Pages/PageNotFound/PageNotFound";
+import PrivacyPolicy from "../Pages/Legal/PrivacyPolicy/PrivacyPolicy";
+import TermsConditions from "../Pages/Legal/TermsConditions/TermsConditions";
 
 const router = createBrowserRouter([
     {
         path: "/",
         Component: Root,
+        errorElement: <PageNotFound />,
         children:[
             {
                 index: true,
@@ -46,6 +50,18 @@ const router = createBrowserRouter([
             {
                 path: "borrowed-books",
                 element: <PrivateRoute><BorrowedBooks /></PrivateRoute>
+            },
+            {
+                path: "legal/privacy-policy",
+                Component: PrivacyPolicy
+            },
+            {
+                path: "legal/terms-conditions",
+                Component: TermsConditions
+            },
+            {
+                path: "*",
+                Component: PageNotFound
             }
         ]
     }
