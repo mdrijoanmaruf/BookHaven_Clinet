@@ -12,6 +12,8 @@ import Contact from "../Pages/Contact/Contact";
 import PageNotFound from "../Pages/PageNotFound/PageNotFound";
 import PrivacyPolicy from "../Pages/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "../Pages/Legal/TermsConditions/TermsConditions";
+import UpdateBook from "../Pages/UpdateBook/UpdateBook";
+import BookDetails from "../Pages/BookDetails/BookDetails";
 
 const router = createBrowserRouter([
     {
@@ -44,8 +46,16 @@ const router = createBrowserRouter([
                 element: <PrivateRoute><AllBooks /></PrivateRoute>
             },
             {
+                path: "book-details/:id",
+                element: <PrivateRoute><BookDetails /></PrivateRoute>
+            },
+            {
                 path: "add-book",
                 element: <PrivateRoute><AddBook /></PrivateRoute>
+            },
+            {
+                path: "update-book/:id",
+                element: <PrivateRoute><UpdateBook /></PrivateRoute>
             },
             {
                 path: "borrowed-books",

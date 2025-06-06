@@ -21,6 +21,36 @@ export const bookAPI = {
     } catch (error) {
       throw error;
     }
+  },
+  
+  // Get all books
+  getAllBooks: async () => {
+    try {
+      const response = await apiClient.get('/books');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  // Get a single book by ID
+  getBookById: async (id) => {
+    try {
+      const response = await apiClient.get(`/books/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  // Update a book
+  updateBook: async (id, bookData) => {
+    try {
+      const response = await apiClient.put(`/books/${id}`, bookData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 };
 

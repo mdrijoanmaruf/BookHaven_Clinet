@@ -1,0 +1,245 @@
+.update-book-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.update-book-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.update-book-header h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.update-book-header h2:after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #3498db, #2ecc71);
+  margin: 10px auto;
+  border-radius: 2px;
+}
+
+.update-book-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.update-book-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.book-preview {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-preview-container {
+  background: #f5f7fa;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid #eaecef;
+}
+
+.image-preview-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  color: #95a5a6;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.current-details {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #3498db;
+}
+
+.current-details h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.current-details p {
+  margin: 0.5rem 0;
+  color: #34495e;
+}
+
+.update-form {
+  flex: 2;
+  min-width: 450px;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  font-size: 1rem;
+}
+
+.cancel-button {
+  background: #ecf0f1;
+  color: #7f8c8d;
+}
+
+.cancel-button:hover {
+  background: #dfe4e6;
+  color: #34495e;
+}
+
+.submit-button {
+  background: linear-gradient(to right, #3498db, #2980b9);
+  color: white;
+}
+
+.submit-button:hover {
+  background: linear-gradient(to right, #2980b9, #2c3e50);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-message,
+.success-message {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.error-message {
+  background: #fdeded;
+  border-left: 4px solid #e74c3c;
+  color: #c0392b;
+}
+
+.success-message {
+  background: #edfff2;
+  border-left: 4px solid #2ecc71;
+  color: #27ae60;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .update-book-container {
+    padding: 1.5rem;
+  }
+  
+  .update-form {
+    min-width: 100%;
+  }
+  
+  .book-preview {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .update-book-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+} 
