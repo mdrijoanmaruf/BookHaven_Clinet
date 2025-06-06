@@ -7,6 +7,8 @@ import PrivateRoute from "./PrivateRoute";
 import AllBooks from "../Pages/AllBooks/AllBooks";
 import AddBook from "../Pages/AddBook/AddBook";
 import BorrowedBooks from "../Pages/BorrowedBooks/BorrowedBooks";
+import About from "../Pages/About/About";
+import Contact from "../Pages/Contact/Contact";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 Component: Home
+            },
+            {
+                path: "about",
+                Component: About
+            },
+            {
+                path: "contact",
+                Component: Contact
             },
             {
                 path: "login",

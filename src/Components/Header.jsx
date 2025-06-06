@@ -55,6 +55,20 @@ const Header = () => {
           Home
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/about" className={({ isActive }) => 
+          isActive ? "text-primary font-bold border-b-2 border-accent pb-1" : "text-primary-dark hover:text-accent transition-colors duration-300"
+        }>
+          About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact" className={({ isActive }) => 
+          isActive ? "text-primary font-bold border-b-2 border-accent pb-1" : "text-primary-dark hover:text-accent transition-colors duration-300"
+        }>
+          Contact
+        </NavLink>
+      </li>
       {user && (
         <>
           <li>
