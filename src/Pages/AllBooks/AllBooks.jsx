@@ -29,7 +29,7 @@ const AllBooks = () => {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Loading books...</p>
+        <p>Loading your library...</p>
       </div>
     );
   }
@@ -37,7 +37,7 @@ const AllBooks = () => {
   if (error) {
     return (
       <div className="error-container">
-        <h3>Error</h3>
+        <h3>Something went wrong</h3>
         <p>{error}</p>
         <button onClick={() => window.location.reload()}>Try Again</button>
       </div>
@@ -47,16 +47,16 @@ const AllBooks = () => {
   if (books.length === 0) {
     return (
       <div className="no-books-container">
-        <h3>No Books Available</h3>
-        <p>There are currently no books in the library.</p>
-        <Link to="/add-book" className="add-book-link">Add a Book</Link>
+        <h3>Your Library is Empty</h3>
+        <p>Start building your collection by adding your first book.</p>
+        <Link to="/add-book" className="add-book-link">Add Your First Book</Link>
       </div>
     );
   }
 
   return (
     <div className="all-books-container">
-      <h2>All Books</h2>
+      <h2>Book Collection</h2>
       <div className="books-grid">
         {books.map((book) => (
           <div key={book._id} className="book-card">
@@ -78,9 +78,24 @@ const AllBooks = () => {
             </div>
             <div className="book-details">
               <h3 title={book.title}>{book.title}</h3>
-              <p className="book-author">By: {book.author}</p>
-              <p className="book-genre">Genre: <span className="genre-tag">{book.genre}</span></p>
-              <p className="book-quantity">Available: {book.quantity}</p>
+              <p className="book-author">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
+                </svg>
+                {book.author}
+              </p>
+              <p className="book-genre">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-4.12-4.122A1.5 1.5 0 0 0 11.378 2H4.5ZM10 8a.75.75 0 0 1 .75.75v1.5h1.5a.75.75 0 0 1 0 1.5h-1.5v1.5a.75.75 0 0 1-1.5 0v-1.5h-1.5a.75.75 0 0 1 0-1.5h1.5v-1.5A.75.75 0 0 1 10 8Z" clipRule="evenodd" />
+                </svg>
+                <span className="genre-tag">{book.genre}</span>
+              </p>
+              <p className="book-quantity">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M10.362 1.093a.75.75 0 0 0-.724 0L2.523 5.018 10 9.143l7.477-4.125-7.115-3.925ZM18 6.443l-7.25 4v8.25l6.862-3.786A.75.75 0 0 0 18 14.25V6.443ZM9.25 18.693v-8.25l-7.25-4v7.807a.75.75 0 0 0 .388.657l6.862 3.786Z" clipRule="evenodd" />
+                </svg>
+                {book.quantity} copies available
+              </p>
               <div className="book-actions">
                 <Link to={`/book-details/${book._id}`} className="details-button">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
