@@ -1,15 +1,45 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../Providers/AuthProvider'
+import Swal from 'sweetalert2'
 
 const Header = () => {
   const { user, logOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    logOut()
-      .then(() => {})
-      .catch(error => console.error(error));
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out of your account",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut()
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Logged Out',
+              text: 'You have been successfully logged out',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            navigate('/');
+          })
+          .catch(error => {
+            console.error(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to log out. Please try again.'
+            });
+          });
+      }
+    });
   };
 
   const toggleMenu = () => {
