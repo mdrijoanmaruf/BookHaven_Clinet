@@ -7,6 +7,8 @@ const AllBooks = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState('All');
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -24,6 +26,17 @@ const AllBooks = () => {
 
     fetchBooks();
   }, []);
+
+  // Get unique genres for filter
+  const genres = ['All', ...new Set(books.map(book => book.genre))];
+
+  // Filter books based on search and genre
+  const filteredBooks = books.filter(book => {
+    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         book.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenre = selectedGenre === 'All' || book.genre === selectedGenre;
+    return matchesSearch && matchesGenre;
+  });
 
   if (loading) {
     return (
@@ -56,9 +69,55 @@ const AllBooks = () => {
 
   return (
     <div className="all-books-container">
-      <h2>Book Collection</h2>
+      <div className="books-header">
+        <h2>Book Collection</h2>
+        
+        <div className="books-filters">
+          <div className="search-container">
+            <input 
+              type="text" 
+              placeholder="Search by title or author..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="search-icon">
+              <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
+            </svg>
+          </div>
+          
+          <div className="genre-filter">
+            <select 
+              value={selectedGenre} 
+              onChange={(e) => setSelectedGenre(e.target.value)}
+              className="genre-select"
+            >
+              {genres.map(genre => (
+                <option key={genre} value={genre}>{genre}</option>
+              ))}
+            </select>
+          </div>
+          
+          <Link to="/add-book" className="add-new-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+              <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+            </svg>
+            Add Book
+          </Link>
+        </div>
+      </div>
+      
+      {filteredBooks.length === 0 ? (
+        <div className="no-results">
+          <p>No books found matching your search criteria.</p>
+          <button onClick={() => {setSearchTerm(''); setSelectedGenre('All');}}>Clear Filters</button>
+        </div>
+      ) : (
+        <div className="books-count">Showing {filteredBooks.length} of {books.length} books</div>
+      )}
+      
       <div className="books-grid">
-        {books.map((book) => (
+        {filteredBooks.map((book) => (
           <div key={book._id} className="book-card">
             <div className="book-image">
               <img src={book.image} alt={book.title} onError={(e) => {e.target.src = '/placeholder-book.jpg'}} />

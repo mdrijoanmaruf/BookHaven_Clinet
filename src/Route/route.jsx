@@ -69,10 +69,6 @@ const router = createBrowserRouter([
                 path: "legal/terms-conditions",
                 Component: TermsConditions
             },
-            {
-                path: "*",
-                Component: PageNotFound
-            }
         ]
     }
 ])
