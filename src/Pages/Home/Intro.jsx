@@ -93,30 +93,32 @@ const Intro = () => {
         
         {/* Navigation Arrows */}
         <button 
-          className="absolute top-1/2 left-4 z-30 -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 text-white"
+          className="absolute top-1/2 left-4 z-30 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 text-white shadow-lg transform hover:scale-110 transition-all duration-200"
           onClick={goToPrevSlide}
+          aria-label="Previous slide"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
         
         <button 
-          className="absolute top-1/2 right-4 z-30 -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 text-white"
+          className="absolute top-1/2 right-4 z-30 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 text-white shadow-lg transform hover:scale-110 transition-all duration-200"
           onClick={goToNextSlide}
+          aria-label="Next slide"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </button>
         
         {/* Dot Indicators */}
-        <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center space-x-2">
+        <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center space-x-3">
           {slides.map((_, index) => (
             <button 
               key={index}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentSlide === index ? 'bg-white scale-125' : 'bg-white bg-opacity-50'
+                currentSlide === index ? 'bg-white scale-125' : 'bg-white bg-opacity-50 hover:bg-opacity-75'
               }`}
               onClick={() => goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}

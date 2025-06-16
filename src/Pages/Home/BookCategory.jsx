@@ -28,12 +28,15 @@ const BookCategory = () => {
 
   // Display placeholder categories if none are found in the database
   const displayCategories = categories.length > 0 ? categories : [
-    { _id: '1', name: 'Fiction', image: 'https://images.unsplash.com/photo-1610116306796-6fea9f4fae38?auto=format&fit=crop&q=80&w=1000', description: 'Fictional stories and novels' },
-    { _id: '2', name: 'Science', image: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1000', description: 'Scientific books and research' },
-    { _id: '3', name: 'History', image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&q=80&w=1000', description: 'Historical accounts and documentation' },
-    { _id: '4', name: 'Biography', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=1000', description: 'Life stories of notable people' },
-    { _id: '5', name: 'Self-Help', image: 'https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?auto=format&fit=crop&q=80&w=1000', description: 'Personal development and growth' },
-    { _id: '6', name: 'Fantasy', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=1000', description: 'Magical worlds and creatures' }
+    { _id: '1', name: 'Thriller', image: 'https://images.unsplash.com/photo-1587876931567-564ce588bfbd?auto=format&fit=crop&q=80&w=1000', description: 'Suspenseful and exciting stories' },
+    { _id: '2', name: 'Sci-Fi', image: 'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?auto=format&fit=crop&q=80&w=1000', description: 'Science fiction and futuristic worlds' },
+    { _id: '3', name: 'Poetry', image: 'https://images.unsplash.com/photo-1474932430478-367dbb6832c1?auto=format&fit=crop&q=80&w=1000', description: 'Expressive and artistic literary works' },
+    { _id: '4', name: 'Drama', image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&q=80&w=1000', description: 'Theatrical and emotional stories' },
+    { _id: '5', name: 'Children', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=1000', description: 'Books for young readers' },
+    { _id: '6', name: 'Self-Help', image: 'https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?auto=format&fit=crop&q=80&w=1000', description: 'Personal development and growth' },
+    { _id: '7', name: 'Biography', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=1000', description: 'Life stories of notable people' },
+    { _id: '8', name: 'Fantasy', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=1000', description: 'Magical worlds and creatures' },
+    { _id: '9', name: 'Romance', image: 'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?auto=format&fit=crop&q=80&w=1000', description: 'Love stories and relationships' }
   ];
 
   return (

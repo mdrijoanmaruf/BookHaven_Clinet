@@ -12,6 +12,7 @@ const BookDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [returnDate, setReturnDate] = useState('');
   const [borrowLoading, setBorrowLoading] = useState(false);
+  const [alreadyBorrowed, setAlreadyBorrowed] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -31,6 +32,26 @@ const BookDetails = () => {
 
     fetchBookDetails();
   }, [id]);
+
+  // Check if user has already borrowed this book
+  useEffect(() => {
+    const checkBorrowStatus = async () => {
+      if (!user || !book) return;
+      
+      try {
+        const borrowedBooks = await bookAPI.getBorrowedBooks(user.uid);
+        const hasAlreadyBorrowed = borrowedBooks.some(
+          borrowedBook => borrowedBook.bookId === book._id && borrowedBook.status === 'borrowed'
+        );
+        
+        setAlreadyBorrowed(hasAlreadyBorrowed);
+      } catch (err) {
+        console.error('Error checking borrow status:', err);
+      }
+    };
+    
+    checkBorrowStatus();
+  }, [user, book]);
 
   // Set default return date (14 days from now)
   useEffect(() => {
@@ -75,6 +96,9 @@ const BookDetails = () => {
         quantity: response.currentQuantity
       }));
       
+      // Update borrowed status
+      setAlreadyBorrowed(true);
+      
       setShowModal(false);
       
       Swal.fire({
@@ -89,11 +113,21 @@ const BookDetails = () => {
       setBorrowLoading(false);
       console.error('Error borrowing book:', err);
       
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed to Borrow',
-        text: err.response?.data?.message || 'Something went wrong. Please try again.'
-      });
+      if (err.response?.data?.alreadyBorrowed) {
+        setAlreadyBorrowed(true);
+        Swal.fire({
+          icon: 'warning',
+          title: 'Already Borrowed',
+          text: 'You have already borrowed this book. You can borrow it again after returning it.',
+          confirmButtonColor: '#3085d6'
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to Borrow',
+          text: err.response?.data?.message || 'Something went wrong. Please try again.'
+        });
+      }
     }
   };
 
@@ -254,20 +288,38 @@ const BookDetails = () => {
                 </svg>
                 Update Book
               </Link>
-              <button 
-                onClick={() => setShowModal(true)} 
-                className={`flex items-center px-6 py-3 font-medium rounded-lg transition transform hover:scale-105 ${
-                  book.quantity <= 0 
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                    : 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg'
-                }`}
-                disabled={book.quantity <= 0}
+              {alreadyBorrowed ? (
+                <div className="flex items-center px-6 py-3 bg-amber-100 text-amber-800 font-medium rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                  </svg>
+                  Already Borrowed
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setShowModal(true)} 
+                  className={`flex items-center px-6 py-3 font-medium rounded-lg transition transform hover:scale-105 ${
+                    book.quantity <= 0 
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg'
+                  }`}
+                  disabled={book.quantity <= 0}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9" />
+                  </svg>
+                  Borrow Book
+                </button>
+              )}
+              <Link 
+                to="/borrowed-books" 
+                className="flex items-center px-6 py-3 bg-green-100 text-green-700 font-medium rounded-lg hover:bg-green-200 transition transform hover:scale-105"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                 </svg>
-                Borrow Book
-              </button>
+                My Borrowed Books
+              </Link>
             </div>
           </div>
         </div>
@@ -275,12 +327,15 @@ const BookDetails = () => {
 
       {/* Borrow Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl w-full max-w-md shadow-2xl max-h-[90vh] overflow-auto animate-slide-up">
-            <div className="flex justify-between items-center p-6 border-b border-gray-100">
-              <h3 className="text-2xl font-semibold text-primary">Borrow Book</h3>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div 
+            className="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+              <h3 className="text-2xl font-semibold text-gray-800">Borrow <span className="text-primary">Book</span></h3>
               <button 
-                className="text-gray-500 hover:text-gray-700 transition"
+                className="text-gray-500 hover:text-gray-700 transition rounded-full hover:bg-gray-100 p-1"
                 onClick={() => setShowModal(false)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -289,7 +344,7 @@ const BookDetails = () => {
               </button>
             </div>
             
-            <div className="p-6">
+            <div className="p-6 max-h-[70vh] overflow-y-auto scrollbar-hide">
               <div className="flex items-center pb-6 mb-6 border-b border-gray-100">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent blur-sm opacity-20 rounded-lg transform -translate-y-1 translate-x-1"></div>
@@ -303,6 +358,11 @@ const BookDetails = () => {
                 <div>
                   <h4 className="text-xl font-semibold text-gray-800 mb-1">{book.title}</h4>
                   <p className="text-gray-600">By {book.author}</p>
+                  {book.quantity > 0 && (
+                    <span className="inline-block mt-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                      {book.quantity} copies available
+                    </span>
+                  )}
                 </div>
               </div>
               
@@ -342,29 +402,44 @@ const BookDetails = () => {
                   />
                 </div>
                 
-                <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                  <p className="text-gray-600">By borrowing this book, you agree to return it by the specified date. Late returns may incur fees.</p>
-                </div>
-                
-                <div className="flex justify-end space-x-4 pt-4">
-                  <button 
-                    type="button" 
-                    onClick={() => setShowModal(false)}
-                    className="px-5 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition transform hover:scale-105"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    type="submit" 
-                    className={`px-5 py-3 bg-gradient-to-r from-primary to-accent text-white font-medium rounded-lg transition transform hover:scale-105 ${
-                      borrowLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-lg'
-                    }`}
-                    disabled={borrowLoading}
-                  >
-                    {borrowLoading ? 'Processing...' : 'Confirm Borrow'}
-                  </button>
+                <div className="bg-amber-50 p-5 rounded-lg border border-amber-100">
+                  <div className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <p className="text-amber-800">By borrowing this book, you agree to return it by the specified date. Late returns may incur fees.</p>
+                  </div>
                 </div>
               </form>
+            </div>
+            
+            <div className="p-6 bg-gray-50 border-t border-gray-100">
+              <div className="flex justify-end space-x-4">
+                <button 
+                  type="button" 
+                  onClick={() => setShowModal(false)}
+                  className="px-5 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition transform hover:scale-105"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleBorrow}
+                  className={`px-5 py-3 bg-gradient-to-r from-primary to-accent text-white font-medium rounded-lg transition transform hover:scale-105 ${
+                    borrowLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-lg'
+                  }`}
+                  disabled={borrowLoading}
+                >
+                  {borrowLoading ? (
+                    <div className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processing...
+                    </div>
+                  ) : 'Confirm Borrow'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

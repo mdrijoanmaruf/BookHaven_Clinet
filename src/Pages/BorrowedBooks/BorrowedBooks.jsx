@@ -9,6 +9,7 @@ const BorrowedBooks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [returningBook, setReturningBook] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('borrowed'); // 'borrowed' (pending) or 'returned'
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -33,6 +34,9 @@ const BorrowedBooks = () => {
 
     fetchBorrowedBooks();
   }, [user, navigate]);
+
+  // Filter books based on status
+  const filteredBooks = borrowedBooks.filter(book => book.status === statusFilter);
 
   const handleReturnBook = async (borrowId, bookId) => {
     try {
@@ -135,7 +139,7 @@ const BorrowedBooks = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
-      <div className="mb-12">
+      <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4">My Borrowed Books</h1>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-6"></div>
         <p className="text-center text-gray-600 text-lg max-w-2xl mx-auto">
@@ -164,129 +168,187 @@ const BorrowedBooks = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {borrowedBooks.map((book) => {
-              const borrowDate = new Date(book.borrowDate);
-              const returnDate = new Date(book.returnDate);
-              const today = new Date();
-              const isOverdue = returnDate < today && book.status === 'borrowed';
-              const daysLeft = Math.ceil((returnDate - today) / (1000 * 60 * 60 * 24));
-              
-              return (
-                <div 
-                  key={book._id} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition"
-                >
-                  <div className="flex flex-col sm:flex-row">
-                    <div className="sm:w-1/3 relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-20"></div>
-                      <img 
-                        src={book.bookImage} 
-                        alt={book.bookTitle}
-                        className="w-full h-48 sm:h-full object-cover" 
-                        onError={(e) => {e.target.src = '/placeholder-book.jpg'}}
-                      />
-                      {book.status === 'borrowed' && (
-                        <div className="absolute top-3 left-3">
-                          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            isOverdue 
-                              ? 'bg-red-100 text-red-700' 
-                              : daysLeft <= 3 
-                                ? 'bg-yellow-100 text-yellow-700'
-                                : 'bg-blue-100 text-blue-700'
-                          }`}>
-                            {isOverdue 
-                              ? 'Overdue' 
-                              : daysLeft === 0 
-                                ? 'Due Today'
-                                : daysLeft === 1 
-                                  ? '1 day left' 
-                                  : `${daysLeft} days left`
-                            }
-                          </div>
-                        </div>
-                      )}
-                      {book.status === 'returned' && (
-                        <div className="absolute top-3 left-3">
-                          <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
-                            Returned
-                          </div>
-                        </div>
-                      )}
-                      
-                      {book.bookCategory && (
-                        <div className="absolute bottom-3 left-3">
-                          <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
-                            {book.bookCategory}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="sm:w-2/3 p-6">
-                      <div className="mb-4">
-                        <h3 className="text-xl font-bold text-gray-800 mb-1">{book.bookTitle}</h3>
-                        <p className="text-gray-600">By {book.bookAuthor}</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 mb-5">
-                        <div>
-                          <p className="text-sm text-gray-500 mb-1">Borrow Date</p>
-                          <p className="font-medium">{borrowDate.toLocaleDateString()}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500 mb-1">Return Date</p>
-                          <p className={`font-medium ${isOverdue ? 'text-red-600' : ''}`}>
-                            {returnDate.toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap items-center gap-3 mt-auto">
-                        <Link 
-                          to={`/book-details/${book.bookId}`} 
-                          className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                          </svg>
-                          View Details
-                        </Link>
-                        
+          {/* Status Filter */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setStatusFilter('borrowed')}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                  statusFilter === 'borrowed'
+                    ? 'bg-white text-primary shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Pending ({borrowedBooks.filter(book => book.status === 'borrowed').length})
+                </div>
+              </button>
+              <button
+                onClick={() => setStatusFilter('returned')}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                  statusFilter === 'returned'
+                    ? 'bg-white text-primary shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Returned ({borrowedBooks.filter(book => book.status === 'returned').length})
+                </div>
+              </button>
+            </div>
+          </div>
+          
+          {filteredBooks.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-xl mx-auto">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-400">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">No {statusFilter === 'borrowed' ? 'Pending' : 'Returned'} Books</h3>
+              <p className="text-gray-600 mb-6">
+                {statusFilter === 'borrowed' 
+                  ? "You don't have any pending borrowed books." 
+                  : "You haven't returned any books yet."}
+              </p>
+              <button 
+                onClick={() => setStatusFilter(statusFilter === 'borrowed' ? 'returned' : 'borrowed')}
+                className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+              >
+                View {statusFilter === 'borrowed' ? 'Returned' : 'Pending'} Books
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredBooks.map((book) => {
+                const borrowDate = new Date(book.borrowDate);
+                const returnDate = new Date(book.returnDate);
+                const today = new Date();
+                const isOverdue = returnDate < today && book.status === 'borrowed';
+                const daysLeft = Math.ceil((returnDate - today) / (1000 * 60 * 60 * 24));
+                
+                return (
+                  <div 
+                    key={book._id} 
+                    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition"
+                  >
+                    <div className="flex flex-col sm:flex-row">
+                      <div className="sm:w-1/3 relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-20"></div>
+                        <img 
+                          src={book.bookImage} 
+                          alt={book.bookTitle}
+                          className="w-full h-48 sm:h-full object-cover" 
+                          onError={(e) => {e.target.src = '/placeholder-book.jpg'}}
+                        />
                         {book.status === 'borrowed' && (
-                          <button 
-                            onClick={() => handleReturnBook(book._id, book.bookId)}
-                            disabled={returningBook === book._id}
-                            className={`inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition ${
-                              returningBook === book._id ? 'opacity-70 cursor-wait' : ''
-                            }`}
-                          >
-                            {returningBook === book._id ? (
-                              <>
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Processing...
-                              </>
-                            ) : (
-                              <>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                                </svg>
-                                Return Book
-                              </>
-                            )}
-                          </button>
+                          <div className="absolute top-3 left-3">
+                            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              isOverdue 
+                                ? 'bg-red-100 text-red-700' 
+                                : daysLeft <= 3 
+                                  ? 'bg-yellow-100 text-yellow-700'
+                                  : 'bg-blue-100 text-blue-700'
+                            }`}>
+                              {isOverdue 
+                                ? 'Overdue' 
+                                : daysLeft === 0 
+                                  ? 'Due Today'
+                                  : daysLeft === 1 
+                                    ? '1 day left' 
+                                    : `${daysLeft} days left`
+                              }
+                            </div>
+                          </div>
                         )}
+                        {book.status === 'returned' && (
+                          <div className="absolute top-3 left-3">
+                            <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                              Returned
+                            </div>
+                          </div>
+                        )}
+                        
+                        {book.bookCategory && (
+                          <div className="absolute bottom-3 left-3">
+                            <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+                              {book.bookCategory}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="sm:w-2/3 p-6">
+                        <div className="mb-4">
+                          <h3 className="text-xl font-bold text-gray-800 mb-1">{book.bookTitle}</h3>
+                          <p className="text-gray-600">By {book.bookAuthor}</p>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 mb-5">
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1">Borrow Date</p>
+                            <p className="font-medium">{borrowDate.toLocaleDateString()}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1">Return Date</p>
+                            <p className={`font-medium ${isOverdue ? 'text-red-600' : ''}`}>
+                              {returnDate.toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-3 mt-auto">
+                          <Link 
+                            to={`/book-details/${book.bookId}`} 
+                            className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            View Details
+                          </Link>
+                          
+                          {book.status === 'borrowed' && (
+                            <button 
+                              onClick={() => handleReturnBook(book._id, book.bookId)}
+                              disabled={returningBook === book._id}
+                              className={`inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition ${
+                                returningBook === book._id ? 'opacity-70 cursor-wait' : ''
+                              }`}
+                            >
+                              {returningBook === book._id ? (
+                                <>
+                                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                  Processing...
+                                </>
+                              ) : (
+                                <>
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                  </svg>
+                                  Return Book
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
           
           <div className="mt-10 text-center">
             <Link 

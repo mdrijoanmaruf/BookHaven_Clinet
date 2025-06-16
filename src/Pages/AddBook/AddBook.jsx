@@ -66,18 +66,15 @@ const AddBook = () => {
   };
   
   const categories = [
-    'Novel',
     'Thriller',
-    'History',
-    'Drama',
     'Sci-Fi',
-    'Fantasy',
-    'Horror',
-    'Biography',
-    'Romance',
     'Poetry',
+    'Drama',
+    'Children',
     'Self-Help',
-    'Children'
+    'Biography',
+    'Fantasy',
+    'Romance'
   ];
   
   return (
