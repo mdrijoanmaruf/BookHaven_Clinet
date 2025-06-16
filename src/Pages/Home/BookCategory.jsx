@@ -37,29 +37,32 @@ const BookCategory = () => {
   ];
 
   return (
-    <div className="py-12 bg-gray-50">
+    <div className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Book Categories</h2>
+        <h2 className="text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Book Categories</h2>
+        <p className="text-center text-primary-dark mb-12 max-w-2xl mx-auto">Explore our diverse collection of books across various categories</p>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayCategories.map((category) => (
             <Link 
               to={`/category/${category.name}`} 
               key={category._id}
-              className="transition-transform duration-300 transform hover:scale-105"
+              className="transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
             >
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full">
-                <div className="h-48 overflow-hidden">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full border border-gray-100 group">
+                <div className="h-48 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10"></div>
                   <img 
                     src={category.image} 
                     alt={category.name} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
-                  <p className="text-gray-600">{category.description || 'Explore books in this category'}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-primary">{category.name}</h3>
+                  <p className="text-gray-600 mb-4">{category.description || 'Explore books in this category'}</p>
                   <div className="mt-4">
-                    <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+                    <span className="inline-block bg-gradient-to-r from-primary to-accent text-white font-medium px-4 py-2 rounded-md transition duration-300 shadow-sm hover:shadow-md">
                       Explore Books
                     </span>
                   </div>

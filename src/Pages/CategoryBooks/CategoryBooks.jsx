@@ -10,9 +10,9 @@ const StarRating = ({ rating }) => {
   
   for (let i = 1; i <= 5; i++) {
     if (i <= rating) {
-      stars.push(<span key={i} className="text-yellow-500 text-xl">{fullStar}</span>);
+      stars.push(<span key={i} className="text-accent text-xl">{fullStar}</span>);
     } else {
-      stars.push(<span key={i} className="text-yellow-500 text-xl">{emptyStar}</span>);
+      stars.push(<span key={i} className="text-accent/30 text-xl">{emptyStar}</span>);
     }
   }
   
@@ -45,34 +45,35 @@ const CategoryBooks = () => {
   if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="py-12 bg-gray-50 min-h-screen">
+    <div className="py-16 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-4">{category} Books</h2>
-        <p className="text-center text-gray-600 mb-12">Explore our collection of {category.toLowerCase()} books</p>
+        <h2 className="text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{category} Books</h2>
+        <p className="text-center text-primary-dark mb-12 max-w-2xl mx-auto">Explore our collection of {category.toLowerCase()} books</p>
 
         {books.length === 0 ? (
           <div className="text-center py-10">
-            <p className="text-lg text-gray-700">No books found in this category.</p>
-            <Link to="/" className="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+            <p className="text-lg text-gray-700 mb-4">No books found in this category.</p>
+            <Link to="/" className="inline-block bg-gradient-to-r from-primary to-accent text-white font-medium px-6 py-3 rounded-md hover:shadow-md transition duration-300">
               Back to Categories
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {books.map((book) => (
-              <div key={book._id} className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
-                <div className="h-64 overflow-hidden">
+              <div key={book._id} className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-gray-100 group transition-all duration-300 hover:shadow-xl">
+                <div className="h-64 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent z-10"></div>
                   <img 
                     src={book.image} 
                     alt={book.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
                 <div className="p-6 flex-grow">
-                  <h3 className="text-xl font-semibold mb-2">{book.title}</h3>
-                  <p className="text-gray-700 mb-1"><span className="font-semibold">Author:</span> {book.author}</p>
-                  <p className="text-gray-700 mb-1"><span className="font-semibold">Category:</span> {book.genre}</p>
-                  <p className="text-gray-700 mb-2"><span className="font-semibold">Quantity:</span> {book.quantity}</p>
+                  <h3 className="text-xl font-semibold mb-3 text-primary">{book.title}</h3>
+                  <p className="text-gray-700 mb-2"><span className="font-semibold text-primary-dark">Author:</span> {book.author}</p>
+                  <p className="text-gray-700 mb-2"><span className="font-semibold text-primary-dark">Category:</span> {book.genre}</p>
+                  <p className="text-gray-700 mb-3"><span className="font-semibold text-primary-dark">Quantity:</span> {book.quantity}</p>
                   
                   <div className="mb-4">
                     <StarRating rating={book.rating || 0} />
@@ -81,7 +82,7 @@ const CategoryBooks = () => {
                 <div className="px-6 pb-6">
                   <Link 
                     to={`/book-details/${book._id}`} 
-                    className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                    className="block w-full bg-gradient-to-r from-primary to-accent text-white text-center px-4 py-3 rounded-md hover:shadow-md transition duration-300"
                   >
                     Details
                   </Link>
