@@ -89,7 +89,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const googleSignIn = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       await storeToken(result.user);
@@ -101,7 +101,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const githubSignIn = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const result = await signInWithPopup(auth, githubProvider);
       await storeToken(result.user);

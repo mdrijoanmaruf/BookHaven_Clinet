@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { bookAPI } from '../../api';
 import './UpdateBook.css';
+import Swal from 'sweetalert2';
 
 const UpdateBook = () => {
   const { id } = useParams();
@@ -69,15 +70,30 @@ const UpdateBook = () => {
       setSuccessMessage('Book updated successfully!');
       setUpdating(false);
       
-      // Redirect after successful update with a slight delay
-      setTimeout(() => {
-        navigate('/all-books');
-      }, 2000);
+      // Show sweet alert on successful update
+      Swal.fire({
+        icon: 'success',
+        title: 'Book Updated!',
+        text: `"${book.title}" has been successfully updated.`,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'View All Books'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/all-books');
+        }
+      });
       
     } catch (err) {
       setError('Failed to update book. Please try again.');
       setUpdating(false);
       console.error('Error updating book:', err);
+      
+      // Show error alert
+      Swal.fire({
+        icon: 'error',
+        title: 'Update Failed',
+        text: 'Failed to update book. Please try again.',
+      });
     }
   };
   

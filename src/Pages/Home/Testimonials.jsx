@@ -5,23 +5,23 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Sarah Johnson',
+      name: 'Md Rijoan Maruf',
       role: 'Avid Reader',
-      image: 'https://randomuser.me/api/portraits/women/12.jpg',
+      image: 'https://i.ibb.co/RT9FwBYw/488257098-1767983300425990-1845821744608083197-n.jpg',
       quote: 'BookHaven has completely transformed my reading experience. The selection is fantastic, and I love how easy it is to discover new books that match my interests.',
     },
     {
       id: 2,
-      name: 'Michael Chen',
+      name: 'Raiyyan Islam',
       role: 'Book Club Organizer',
-      image: 'https://randomuser.me/api/portraits/men/32.jpg',
+      image: 'https://i.ibb.co/N2dZt4zq/raiyaan.jpg',
       quote: 'Our book club relies on BookHaven for all our monthly selections. The detailed descriptions and reviews help us choose books that lead to great discussions.',
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
+      name: 'Osman Goni',
       role: 'Literature Student',
-      image: 'https://randomuser.me/api/portraits/women/45.jpg',
+      image: 'https://i.ibb.co/6JHTPQwk/osman.jpg',
       quote: 'As a literature student, I need access to a wide variety of books. BookHaven has been an invaluable resource for my studies and personal reading journey.',
     },
   ];

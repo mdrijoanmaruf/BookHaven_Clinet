@@ -2,6 +2,10 @@
 
 BookHaven is a comprehensive library management system built with React, allowing users to browse, borrow, and return books from the library's collection.
 
+## Live Demo
+
+Visit the live application: [BookHaven](https://rijoan-book-haven.netlify.app/)
+
 ## Features
 
 - **User Authentication**: Secure login and registration with Firebase Auth
