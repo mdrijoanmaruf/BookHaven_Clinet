@@ -11,6 +11,38 @@ const apiClient = axios.create({
   },
 });
 
+// Add request interceptor to include JWT token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('bookHavenToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle authentication errors
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle 401 (Unauthorized) or 403 (Forbidden) errors
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      // Clear token if it's invalid or expired
+      localStorage.removeItem('bookHavenToken');
+      
+      // Redirect to login page if needed
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Book related API calls
 export const bookAPI = {
   // Add a new book
@@ -85,8 +117,12 @@ export const bookAPI = {
   
   // Return a borrowed book
   returnBook: async (data) => {
-    const response = await axios.post(`${API_BASE_URL}/return-book`, data);
-    return response.data;
+    try {
+      const response = await apiClient.post(`/return-book`, data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 };
 

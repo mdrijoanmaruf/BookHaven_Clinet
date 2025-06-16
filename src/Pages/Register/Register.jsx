@@ -4,7 +4,7 @@ import { useAuth } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
 
 const Register = () => {
-  const { createUser, updateUserProfile, googleSignIn, githubSignIn } = useAuth();
+  const { createUser, updateUserProfile, googleSignIn, githubSignIn, storeToken } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [photoURL, setPhotoURL] = useState('');
@@ -74,6 +74,9 @@ const Register = () => {
         // Force refresh to get the updated user profile
         await userCredential.user.reload();
         
+        // Generate and store JWT token
+        await storeToken(userCredential.user);
+        
         // Success alert
         Swal.fire({
           icon: 'success',
@@ -100,7 +103,7 @@ const Register = () => {
   const handleGoogleRegister = async () => {
     setLoading(true);
     try {
-      await googleSignIn();
+      const result = await googleSignIn();
       
       Swal.fire({
         icon: 'success',
@@ -126,7 +129,7 @@ const Register = () => {
   const handleGithubRegister = async () => {
     setLoading(true);
     try {
-      await githubSignIn();
+      const result = await githubSignIn();
       
       Swal.fire({
         icon: 'success',
