@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { categoryAPI } from '../../api';
 
 const BookCategory = () => {
@@ -23,8 +24,63 @@ const BookCategory = () => {
     fetchCategories();
   }, []);
 
-  if (loading) return <div className="text-center py-10">Loading categories...</div>;
-  if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  if (loading) return (
+    <div className="text-center py-10">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="inline-block"
+      >
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-primary-dark">Loading categories...</p>
+      </motion.div>
+    </div>
+  );
+
+  if (error) return (
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      className="text-center py-10 text-red-500"
+    >
+      Error: {error}
+    </motion.div>
+  );
 
   // Display placeholder categories if none are found in the database
   const displayCategories = categories.length > 0 ? categories : [
@@ -40,42 +96,90 @@ const BookCategory = () => {
   ];
 
   return (
-    <div className="py-16 bg-gray-50">
+    <motion.div 
+      className="py-16 bg-gray-50"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Book Categories</h2>
-        <p className="text-center text-primary-dark mb-12 max-w-2xl mx-auto">Explore our diverse collection of books across various categories</p>
+        <motion.h2 
+          className="text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+          variants={titleVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          Book Categories
+        </motion.h2>
+        <motion.p 
+          className="text-center text-primary-dark mb-12 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          Explore our diverse collection of books across various categories
+        </motion.p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {displayCategories.map((category) => (
-            <Link 
-              to={`/category/${category.name}`} 
+            <motion.div
               key={category._id}
-              className="transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+              variants={cardVariants}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.3 }
+              }}
             >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full border border-gray-100 group">
-                <div className="h-48 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10"></div>
-                  <img 
-                    src={category.image} 
-                    alt={category.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-primary">{category.name}</h3>
-                  <p className="text-gray-600 mb-4">{category.description || 'Explore books in this category'}</p>
-                  <div className="mt-4">
-                    <span className="inline-block bg-gradient-to-r from-primary to-accent text-white font-medium px-4 py-2 rounded-md transition duration-300 shadow-sm hover:shadow-md">
-                      Explore Books
-                    </span>
+              <Link 
+                to={`/category/${category.name}`} 
+                className="block h-full"
+              >
+                <motion.div 
+                  className="bg-white rounded-lg shadow-md overflow-hidden h-full border border-gray-100 group"
+                  whileHover={{ boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
+                >
+                  <div className="h-48 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10"></div>
+                    <motion.img 
+                      src={category.image} 
+                      alt={category.name} 
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    />
                   </div>
-                </div>
-              </div>
-            </Link>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2 text-primary">{category.name}</h3>
+                    <p className="text-gray-600 mb-4">{category.description || 'Explore books in this category'}</p>
+                    <div className="mt-4">
+                      <motion.span 
+                        className="inline-block bg-gradient-to-r from-primary to-accent text-white font-medium px-4 py-2 rounded-md shadow-sm"
+                        whileHover={{ 
+                          scale: 1.05,
+                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)"
+                        }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        Explore Books
+                      </motion.span>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
