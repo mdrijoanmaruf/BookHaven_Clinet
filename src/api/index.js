@@ -61,6 +61,32 @@ export const bookAPI = {
     } catch (error) {
       throw error;
     }
+  },
+  
+  // Borrow a book
+  borrowBook: async (borrowData) => {
+    try {
+      const response = await apiClient.post('/borrow', borrowData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  // Get borrowed books for a user
+  getBorrowedBooks: async (userId) => {
+    try {
+      const response = await apiClient.get(`/borrowed-books/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  // Return a borrowed book
+  returnBook: async (data) => {
+    const response = await axios.post(`${API_BASE_URL}/return-book`, data);
+    return response.data;
   }
 };
 

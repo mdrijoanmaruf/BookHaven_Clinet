@@ -15,6 +15,7 @@ import UpdateBook from "../Pages/UpdateBook/UpdateBook";
 import BookDetails from "../Pages/BookDetails/BookDetails";
 import AllUsers from "../Pages/AllUsers/AllUsers";
 import CategoryBooks from "../Pages/CategoryBooks/CategoryBooks";
+import BorrowedBooks from "../Pages/BorrowedBooks/BorrowedBooks";
 
 const router = createBrowserRouter([
     {
@@ -68,10 +69,10 @@ const router = createBrowserRouter([
                 path: "category/:category",
                 Component: CategoryBooks
             },
-            // {
-            //     path: "borrowed-books",
-            //     element: <PrivateRoute><BorrowedBooks /></PrivateRoute>
-            // },
+            {
+                path: "borrowed-books",
+                element: <PrivateRoute><BorrowedBooks /></PrivateRoute>
+            },
             {
                 path: "legal/privacy-policy",
                 Component: PrivacyPolicy
