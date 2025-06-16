@@ -21,8 +21,6 @@ const Login = () => {
 
     try {
       await signIn(email, password);
-      
-      // Success alert
       Swal.fire({
         icon: 'success',
         title: 'Login Successful',
@@ -58,7 +56,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       await googleSignIn();
       
@@ -80,7 +78,7 @@ const Login = () => {
         text: errorMessage,
       });
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 

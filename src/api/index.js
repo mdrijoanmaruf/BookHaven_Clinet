@@ -51,9 +51,33 @@ export const bookAPI = {
     } catch (error) {
       throw error;
     }
+  },
+  
+  // Get books by category
+  getBooksByCategory: async (category) => {
+    try {
+      const response = await apiClient.get(`/books/category/${category}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+// Category related API calls
+export const categoryAPI = {
+  // Get all categories
+  getAllCategories: async () => {
+    try {
+      const response = await apiClient.get('/categories');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 };
 
 export default {
-  bookAPI
+  bookAPI,
+  categoryAPI
 }; 
