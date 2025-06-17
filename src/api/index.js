@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API calls
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://book-haven-server-zeta.vercel.app/api';
 
 // Create axios instance with base configuration
 const apiClient = axios.create({
