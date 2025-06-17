@@ -19,7 +19,7 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 // API URL
-const API_URL = 'https://book-haven-server-zeta.vercel.app/';
+const API_URL = 'https://book-haven-server-zeta.vercel.app';
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
