@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from 'react-helmet-async';
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -72,7 +73,12 @@ const AllUsers = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
+      <Helmet>
+        <title>All Users - Community Members | BookHaven</title>
+        <meta name="description" content="View all registered members of the BookHaven community. Browse user profiles and connect with fellow book enthusiasts." />
+      </Helmet>
+      <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
         All Users ({users.length})
       </h1>
@@ -160,6 +166,7 @@ const AllUsers = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

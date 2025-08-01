@@ -1,9 +1,15 @@
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
 const PrivacyPolicy = () => {
   return (
-    <div className="bg-gray-50 py-12">
+    <>
+      <Helmet>
+        <title>Privacy Policy - Your Data Protection | BookHaven</title>
+        <meta name="description" content="Learn how BookHaven protects your privacy and handles your personal data. Read our comprehensive privacy policy." />
+      </Helmet>
+      <div className="bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-3xl font-bold text-primary-dark mb-6">Privacy Policy</h1>
@@ -126,6 +132,7 @@ const PrivacyPolicy = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

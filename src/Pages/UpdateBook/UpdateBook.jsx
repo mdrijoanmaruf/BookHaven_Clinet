@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
 import { bookAPI } from '../../api';
 import './UpdateBook.css';
@@ -112,7 +113,12 @@ const UpdateBook = () => {
   }
   
   return (
-    <div className="update-book-container">
+    <>
+      <Helmet>
+        <title>{book.title ? `Update ${book.title}` : 'Update Book'} | BookHaven</title>
+        <meta name="description" content="Update book information including title, author, genre, rating, and other details in your BookHaven library." />
+      </Helmet>
+      <div className="update-book-container">
       <div className="update-book-header">
         <h2>Update Book</h2>
         <p>Update the information for "{book.title}"</p>
@@ -279,6 +285,7 @@ const UpdateBook = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

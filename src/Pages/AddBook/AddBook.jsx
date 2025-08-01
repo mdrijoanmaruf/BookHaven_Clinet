@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { bookAPI } from '../../api';
@@ -78,7 +79,12 @@ const AddBook = () => {
   ];
   
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 min-h-screen">
+    <>
+      <Helmet>
+        <title>Add New Book - Expand Our Library | BookHaven</title>
+        <meta name="description" content="Add a new book to our collection. Help expand our digital library with titles that inspire, educate, and entertain our community." />
+      </Helmet>
+      <div className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 min-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
@@ -332,6 +338,7 @@ const AddBook = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

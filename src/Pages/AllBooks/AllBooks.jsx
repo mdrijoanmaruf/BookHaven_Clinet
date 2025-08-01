@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { bookAPI } from '../../api';
 import './AllBooks.css';
@@ -88,12 +89,17 @@ const AllBooks = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <>
+      <Helmet>
+        <title>All Books - Browse Our Collection | BookHaven</title>
+        <meta name="description" content="Browse through our extensive collection of books. Filter by genre, search by title or author, and find your next great read." />
+      </Helmet>
+      <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto">
         {/* Title and Add Book Button */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent mb-4 sm:mb-0">
+          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent mb-4 sm:mb-0">
             Book Collection
           </h2>
           
@@ -348,6 +354,7 @@ const AllBooks = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

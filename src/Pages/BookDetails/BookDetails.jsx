@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { bookAPI } from '../../api';
 import { useAuth } from '../../Providers/AuthProvider';
@@ -174,7 +175,12 @@ const BookDetails = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <>
+      <Helmet>
+        <title>{book?.title ? `${book.title} - Book Details` : 'Book Details'} | BookHaven</title>
+        <meta name="description" content={book?.description ? `${book.description.substring(0, 150)}...` : 'View detailed information about this book including author, rating, and availability.'} />
+      </Helmet>
+      <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
         <div className="p-8 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
           <h1 className="text-4xl font-bold text-gray-800 mb-5">{book.title}</h1>
@@ -445,6 +451,7 @@ const BookDetails = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

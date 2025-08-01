@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
@@ -116,7 +117,12 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      <Helmet>
+        <title>Login - Sign In to Your Account | BookHaven</title>
+        <meta name="description" content="Sign in to your BookHaven account to access your digital library, manage borrowed books, and explore our collection." />
+      </Helmet>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-primary-dark">
@@ -238,6 +244,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

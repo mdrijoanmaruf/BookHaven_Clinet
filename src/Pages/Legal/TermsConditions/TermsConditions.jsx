@@ -1,9 +1,15 @@
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
 const TermsConditions = () => {
   return (
-    <div className="bg-gray-50 py-12">
+    <>
+      <Helmet>
+        <title>Terms & Conditions - Service Agreement | BookHaven</title>
+        <meta name="description" content="Read BookHaven's terms and conditions. Understand the rules and guidelines for using our digital library platform." />
+      </Helmet>
+      <div className="bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-3xl font-bold text-primary-dark mb-6">Terms and Conditions</h1>
@@ -139,6 +145,7 @@ const TermsConditions = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

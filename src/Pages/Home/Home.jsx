@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 import Intro from './Intro'
 import BookCategory from './BookCategory'
 import FeaturedBooks from './FeaturedBooks'
@@ -33,30 +34,36 @@ const Home = () => {
   };
 
   return (
-    <motion.div 
-      className="min-h-screen"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      <Intro />
-      
-      <motion.div variants={sectionVariants}>
-        <BookCategory />
+    <>
+      <Helmet>
+        <title>Home - Your Digital Library | BookHaven</title>
+        <meta name="description" content="Welcome to BookHaven - Your premier digital library platform. Discover, borrow, and manage books with ease." />
+      </Helmet>
+      <motion.div 
+        className="min-h-screen"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <Intro />
+        
+        <motion.div variants={sectionVariants}>
+          <BookCategory />
+        </motion.div>
+        
+        <motion.div variants={sectionVariants}>
+          <FeaturedBooks />
+        </motion.div>
+        
+        <motion.div variants={sectionVariants}>
+          <Testimonials />
+        </motion.div>
+        
+        <motion.div variants={sectionVariants}>
+          <Newsletter />
+        </motion.div>
       </motion.div>
-      
-      <motion.div variants={sectionVariants}>
-        <FeaturedBooks />
-      </motion.div>
-      
-      <motion.div variants={sectionVariants}>
-        <Testimonials />
-      </motion.div>
-      
-      <motion.div variants={sectionVariants}>
-        <Newsletter />
-      </motion.div>
-    </motion.div>
+    </>
   )
 }
 

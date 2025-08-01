@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom'
 
@@ -45,7 +46,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <>
+      <Helmet>
+        <title>Contact Us - Get in Touch | BookHaven</title>
+        <meta name="description" content="Have questions or feedback? Get in touch with the BookHaven team. We're here to help with your digital library needs." />
+      </Helmet>
+      <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-primary to-accent text-white py-16">
         <div className="container mx-auto px-4">
@@ -317,6 +323,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

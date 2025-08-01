@@ -1,9 +1,15 @@
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
 const PageNotFound = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <>
+      <Helmet>
+        <title>Page Not Found - 404 Error | BookHaven</title>
+        <meta name="description" content="Sorry, the page you're looking for doesn't exist. Return to BookHaven's homepage to continue exploring our digital library." />
+      </Helmet>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-4xl w-full text-center">
         <div className="mb-8">
           <div className="relative inline-block">
@@ -67,6 +73,7 @@ const PageNotFound = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

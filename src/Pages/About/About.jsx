@@ -1,8 +1,14 @@
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 
 const About = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <>
+      <Helmet>
+        <title>About Us - Our Story & Mission | BookHaven</title>
+        <meta name="description" content="Learn about BookHaven's journey, our mission to make knowledge accessible, and the passionate team behind our digital library platform." />
+      </Helmet>
+      <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-primary to-accent text-white py-16">
         <div className="container mx-auto px-4">
@@ -129,6 +135,7 @@ const About = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

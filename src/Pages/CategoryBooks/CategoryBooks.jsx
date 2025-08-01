@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { bookAPI } from '../../api';
 
@@ -45,7 +46,12 @@ const CategoryBooks = () => {
   if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="py-16 bg-gray-50 min-h-screen">
+    <>
+      <Helmet>
+        <title>{category} Books - Browse Category Collection | BookHaven</title>
+        <meta name="description" content={`Explore our collection of ${category.toLowerCase()} books. Find the perfect book for your interests and reading preferences.`} />
+      </Helmet>
+      <div className="py-16 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{category} Books</h2>
         <p className="text-center text-primary-dark mb-12 max-w-2xl mx-auto">Explore our collection of {category.toLowerCase()} books</p>
@@ -93,6 +99,7 @@ const CategoryBooks = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

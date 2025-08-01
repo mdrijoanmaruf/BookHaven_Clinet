@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, Link } from 'react-router-dom';
 import { bookAPI } from '../../api';
 import { useAuth } from '../../Providers/AuthProvider';
@@ -137,7 +138,12 @@ const BorrowedBooks = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <>
+      <Helmet>
+        <title>My Borrowed Books - Track Your Loans | BookHaven</title>
+        <meta name="description" content="View and manage all the books you've borrowed from BookHaven. Track return dates and manage your reading queue." />
+      </Helmet>
+      <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4">My Borrowed Books</h1>
@@ -364,6 +370,7 @@ const BorrowedBooks = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

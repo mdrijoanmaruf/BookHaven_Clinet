@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
@@ -153,7 +154,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      <Helmet>
+        <title>Register - Create Your Account | BookHaven</title>
+        <meta name="description" content="Join BookHaven today! Create your account to access our vast digital library, borrow books, and manage your reading journey." />
+      </Helmet>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-primary-dark">
@@ -309,6 +315,7 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
